@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org" ng-app="app">
+
+<head>
+  
+  <link data-require="bootstrap@3.3.2" data-semver="3.3.2" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+  <link data-require="font-awesome@4.3.0" data-semver="4.3.0" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="//www.johnpapa.net/scripts/toastr.min.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <script src="common.js"></script>
+  <script data-require="jquery@2.1.3" data-semver="2.1.4" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script data-require="angular.js@1.4.0" data-semver="1.4.0" src="https://code.angularjs.org/1.4.0/angular.js"></script>
+  <script data-require="bootstrap@3.3.2" data-semver="3.3.2" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="//www.johnpapa.net/scripts/toastr.min.js"></script>
+
+  <script src="script.js"></script>
+
+</head>
+
+<body ng-controller="RefManager as ctrl">
+  <h1>List Reorder <small>(See readme.md for details)</small></h1>
+  <div style="display:inline-block; width:100%">
+    <div class="input-group">
+      <div class="input-group-addon">Pick A Ref List:</div>
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          Ref List Name <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" style="min-width:400px; white-space:normal">
+          <li style="display:inline-block;" ng-repeat="rec in ctrl.lists">
+            <div class="btn-group btn-group-xs">
+              <button type="button" class="btn btn-default btn-xs" title="name" ng-click="ctrl.selectedList = rec">
+                {{rec.name}}
+              </button>
+              <button type="button" class="btn btn-danger btn-xs" title="Delete" ng-click="ctrl.deleteList(rec)">
+                <small class="fa fa-times"></small>
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <input type="text" class="form-control" placeholder="New List Name" ng-model="ctrl.newlist.name" />
+      <div class="input-group-btn">
+        <button class="btn btn-primary" type="button" title="Save" ng-click="ctrl.addList()">New</button>
+      </div>
+    </div>
+    <h4 ng-if="ctrl.selectedList !== undefined && ctrl.selectedList !== null">
+        <small>Selected List: </small>
+
+{{ctrl.selectedList.name}}</h4>
+    <h4 ng-if="ctrl.selectedList === undefined || ctrl.selectedList === null">Please select or create a list.</h4>
+    <form name="EditLookups" style="width:100%;">
+      <table class="table" style="width:100%;">
+        <thead style="border-bottom:4px solid gray">
+          <tr>
+            <th style="width:10%;">#</th>
+            <th style="width:40%;">Name</th>
+            <th style="width:40%;">Value*</th>
+            <th style="width:10%;">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="rec in ctrl.selectedList.items | orderBy: 'lineNo'">
+            <td class="table-control" style="border-right:3px solid silver;">
+              <input type="number" name="Line Number" min="0" max="999" ng-model="rec.lineNo" required="" style="min-width:10px;" ng-change="ctrl.changeLineOrder(rec)" ng-model-options="{updateOn: 'default blur', debounce: {default: 500, blur: 0} }" />
+            </td>
+            <td class="table-control" style="border-right:3px solid silver;">
+              <input type="text" name="Text" ng-model="rec.text" required="" style="min-width:40px;" />
+            </td>
+            <td class="table-control" style="border-right:3px solid silver;">
+              <input type="text" name="Value" ng-model="rec.value" style="min-width:40px;" />
+            </td>
+            <td class="table-control">
+              <button type="button" class="btn btn-danger btn-xs" title="Delete" ng-click="ctrl.deleteDetails(rec)">
+                <small class="fa fa-times"></small>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot ng-if="ctrl.selectedList !== undefined && ctrl.selectedList !== null && ctrl.lists.length > 0" style="border-top:4px solid gray">
+          <tr>
+            <td class="table-control" style="border-right:3px solid silver;">
+              <span style="color:#cccccc; min-width:10px;">New Row</span>
+            </td>
+            <td class="table-control" style="border-right:3px solid silver;">
+              <input type="text" required="" placeholder="Text for list" style="min-width:40px;" ng-model="ctrl.newEntry.text" ng-init="ctrl.newEntry.text = ''" />
+            </td>
+            <td class="table-control" style="border-right:3px solid silver;">
+              <input type="text" placeholder="Value for list (May be ignored based on the use of the list.)" style="min-width:40px;" ng-model="ctrl.newEntry.value" />
+            </td>
+            <td class="table-control">
+              <button type="button" class="btn btn-success btn-xs" title="Add to list" ng-click="ctrl.addDetails(ctrl.newEntry)" ng-disabled="ctrl.newEntry.text === ''">
+                <span class="fa fa-plus"></span>
+              </button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      <button type="button" class="btn btn-success pull-right" title="Save" ng-click="ctrl.updateDetails(ctrl.selectedList)">
+        <span class="fa fa-save fa-2x"></span>   Save Selected List   </button>
+    </form>
+  </div>
+</body>
+
+</html>

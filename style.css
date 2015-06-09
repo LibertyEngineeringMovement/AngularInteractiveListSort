@@ -1,0 +1,28 @@
+/* Styles go here */
+
+    input{
+      width:100% !important;
+      margin:0 !important;
+    }
+    
+    tfoot td{
+      padding:0 !important;
+    }
+    
+    input::-webkit-input-placeholder {
+      color: silver;
+    }
+    
+    input:-moz-placeholder {
+      /* Firefox 18- */
+      color: silver;
+    }
+    
+    input::-moz-placeholder {
+      /* Firefox 19+ */
+      color: silver;
+    }
+    
+    input:-ms-input-placeholder {
+      color: silver;
+    }
