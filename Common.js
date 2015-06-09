@@ -1,5 +1,6 @@
 /*ARRAY OBJECTS*/
 /*Array.filter()*/
+
 if (!Array.prototype.filter) {
     Array.prototype.filter = function (fun /*, thisArg */) {
         "use strict";
