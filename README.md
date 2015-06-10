@@ -4,6 +4,8 @@ It assumes that the value that you put into the line number box is the target li
 
 The only exception is when you pick a value under 1, or greater than the count.
 
+See it in action: http://embed.plnkr.co/FDTlKs4nlUWDmotXmc7u/preview
+
 Known compatibility issues
 * IE has a problem where when you renumber a field, you have to leave the text box, re-enter the text box, then you can retype. Otherwise the kbd entry is ignored, regardless of how many times you click on the text box.
 
